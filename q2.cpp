@@ -1,18 +1,36 @@
-// IC151 — Lab A1a, question 2: is the reading above the average?
-
-// Read two limits and one reading, then say where the reading sits.
-// See README.md for the rules and the exact output.
+// IC151 — Lab A2, question 2: Person Class Initialization & Update
+//
+// Define a Person class and manage object state updates.
 
 #include <iostream>
+#include <string>
+#include <iomanip>
+
+class Person {
+private:
+   /*Define you data here*/
+
+public:
+    /*Define you methods here*/
 
 int main() {
-    int lowLimit = 0;
-    int highLimit = 0;
-    int reading = 0;
-    std::cin >> lowLimit >> highLimit >> reading;
+    std::string name;
+    int age, new_age;
+    double height, gpa, new_height, new_gpa;
+    char gender;
 
-    // TODO: print exactly one of BELOW, EQUAL, ABOVE, on one line.
-    //       Compare 2 * reading against lowLimit + highLimit. Whole-number
-    //       division would throw away the half and answer EQUAL wrongly.
-    std::cout << "TODO" << '\n';
+    if (std::cin >> name >> age >> height >> gender >> gpa >> new_age >> new_height >> new_gpa) {
+        Person p;
+        p.init(name, age, height, gender, gpa);
+        
+        std::cout << "Initial Person:\n";
+        p.display();
+        
+        p.update(new_age, new_height, new_gpa);
+        
+        std::cout << "Updated Person:\n";
+        p.display();
+    }
+
+    return 0;
 }
