@@ -1,125 +1,51 @@
-# Lab A1a — making decisions
+# C++ Dynamic Memory & Class Practice Assignments
 
-Three questions, one file each. Each one reads its input, decides, and prints the
-answer — nothing more. You need only what is already covered: operator precedence,
-`if`/`else`, integer arithmetic, and where a variable lives.
-
-This course uses **C++17**. Build any question with:
-
-```bash
-g++ -std=c++17 -Wall -Wextra -pedantic q1.cpp -o q1
-./q1
-```
-
-Each program reads its input from the keyboard and prints **one line**.
+This repository contains C++ implementations and automated verification for two core OOP and memory management assignments.
 
 ---
 
-## q1 — over-current protection
+## Question 1: Dynamic Array Allocation and Resizing
 
-Input: `current safeLimit stopFlag` (a current, the safe limit, and `1` when the
-emergency stop is pressed, `0` when it is not).
+### Problem Statement
+Write a C++ program to dynamically create an array of type `Person` (where a `Person` has characteristics: `name`, `age`, `height`, `gender`, and `gpa`) to store the data of 500 persons. Subsequently, resize this array dynamically to hold data for 600 persons. Navigate the resized array to find and print the average age, height, and GPA for all 600 persons.
 
-Test the conditions in this order — exceptional case first:
-
-| Condition | Print |
-| --- | --- |
-| the current is negative | `INVALID` |
-| the emergency stop is pressed, **or** the current is above `safeLimit` | `TRIP` |
-| the current is above 90% of `safeLimit` | `WARNING` |
-| anything else | `NORMAL` |
-
-The order is the whole point. A negative reading is meaningless, so it is reported
-before anything else is even considered — including the stop button.
-
-Use `else if` for the middle conditions, so that reaching one means every condition
-above it was already false. Watch the boundaries: *above* the limit trips, exactly at
-it does not.
-
-```text
-3 10 0    -> NORMAL
-9.5 10 0  -> WARNING
-12 10 0   -> TRIP
-```
-
-## q2 — is the reading above the average?
-
-Input: `lowLimit highLimit reading`, three whole numbers.
-
-| Condition | Print |
-| --- | --- |
-| the reading is below the average of the two limits | `BELOW` |
-| the reading is exactly the average | `EQUAL` |
-| anything else | `ABOVE` |
-
-The average of the two limits is `(lowLimit + highLimit) / 2` — but these are whole
-numbers, and whole-number division throws the half away. With limits 3 and 4 the true
-average is 3.5, yet `(3 + 4) / 2` is 3, so a reading of 3 would be called `EQUAL` when
-it is really below.
-
-Double the reading instead of halving the sum:
-
-```cpp
-if (2 * reading < lowLimit + highLimit)
-```
-
-Nothing is thrown away, and the comparison is exact. `*` and `+` both bind tighter
-than `<`, so no brackets are needed.
-
-```text
-10 20 14 -> BELOW
-10 20 15 -> EQUAL
-10 20 16 -> ABOVE
-3 4 3    -> BELOW
-```
-## q3 — is it a multiple?
-
-Input: `value divisor`.
-
-| Condition | Print |
-| --- | --- |
-| `divisor` is zero | `INVALID` |
-| `value` is an exact multiple of `divisor` | `DIVISIBLE` |
-| anything else | `NOT DIVISIBLE` |
-
-`value % divisor` is the remainder left after dividing, so a remainder of zero means
-it divided exactly.
-
-`%` is **undefined when the divisor is zero** — the program may do anything at all,
-including crash. So the zero has to be ruled out before the `%` is reached. Test it
-first, or let `&&` stop early:
-
-```cpp
-if (divisor != 0 && value % divisor == 0)
-```
-
-The left side is checked first, and if it is false the right side never runs.
-
-Zero is a multiple of everything, and negative values work the same way — check both
-against your code rather than guessing.
-
-```text
-12 4 -> DIVISIBLE
-13 4 -> NOT DIVISIBLE
-7 0  -> INVALID
-```
+### Expected Functionality
+1. Dynamically allocate memory for an array of 500 `Person` structures/objects.
+2. Populate initial 500 records.
+3. Dynamically reallocate memory to expand the array capacity from 500 to 600 elements while preserving original data.
+4. Populate the remaining 100 records.
+5. Traverse the entire 600-element array to calculate and output:
+   - Average Age
+   - Average Height
+   - Average GPA
 
 ---
 
-## Check your work
+## Question 2: Person Class Initialization and Updates
 
-```bash
-chmod +x check.sh
-./check.sh
-```
+### Problem Statement
+Write a C++ program to create a class named `Person` with characteristics: `name`, `age`, `height`, `gender`, and `gpa`. 
+- Include member functions to initialize the object data.
+- Include an `update` member function to modify the `age`, `height`, and `gpa` of an existing `Person` object.
+- Provide display methods to verify data before and after modification.
 
-`chmod` is only needed once — unzipping a download removes the executable bit.
+### Expected Functionality
+1. Encapsulate person attributes inside a `Person` class.
+2. Use constructor or explicit `init()` method to set initial attribute values.
+3. Use an `update()` method to modify `age`, `height`, and `gpa`.
+4. Output initial and updated object states.
 
-The check builds each question and runs five cases against it, then prints `PASS` or
-shows you the input, what was expected, and what your program printed. The untouched
-template fails every case; that is expected until you write the code.
+---
 
-## Submitting
+## Test Examples
 
-Commit and push to `main`. The last commit on `main` at the deadline is what gets
-graded. Editing a file only on your own machine does not submit anything.
+### Question 1 Examples
+
+#### Test Example 1.1 (Standard Small Dataset - Scaled Concept Validation)
+* **Input Dataset Overview**: 600 records with uniform values across all entries.
+  - 600 entries: Age = `20`, Height = `170.0`, GPA = `3.5`
+* **Expected Output**:
+  ```text
+  Average Age: 20.00
+  Average Height: 170.00
+  Average GPA: 3.50
